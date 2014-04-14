@@ -9,4 +9,6 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <run_depend>camera1394stereo</run_depend>
+
 </package>
