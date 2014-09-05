@@ -19,7 +19,7 @@
     <node pkg="nodelet" type="nodelet" name="$(arg base_topic)_node_left" output="screen"
       args="load camera1394/driver $(arg manager)">
       <param name="frame_id" value="$(arg base_topic)_optical_frame" />
-      <!--<param name="camera_info_url" value="package://lcsr_camera_models/cameras/bumblebee/calibration/bb2_03s2c_xxxxxx03_left.ini" />-->
+      <param name="camera_info_url" value="package://lcsr_camera_models/cameras/flea2stereo/calibration/fl2g_13s2c_c_left.ini" />
       <remap from="camera" to="$(arg base_topic)_left" />
       <rosparam subst_value="true">
         # camera mode
@@ -27,7 +27,6 @@
         reset_on_open: true
         video_mode: 1280x960_rgb8
         frame_rate: 15.0
-        frame_id: $(arg base_topic)_left_optical_frame
         iso_speed: 800
         # param modes
         auto_bleftness: $(arg dc_manual)
@@ -56,7 +55,7 @@
     <node pkg="nodelet" type="nodelet" name="$(arg base_topic)_node_right" output="screen"
       args="load camera1394/driver $(arg manager)">
       <param name="frame_id" value="$(arg base_topic)_optical_frame" />
-      <!--<param name="camera_info_url" value="package://lcsr_camera_models/cameras/bumblebee/calibration/bb2_03s2c_xxxxxx03_left.ini" />-->
+      <param name="camera_info_url" value="package://lcsr_camera_models/cameras/flea2stereo/calibration/fl2g_13s2c_c_right.ini" />
       <remap from="camera" to="$(arg base_topic)_right" />
       <rosparam subst_value="true">
         # camera mode
@@ -64,7 +63,6 @@
         reset_on_open: true
         video_mode: 1280x960_rgb8
         frame_rate: 15.0
-        frame_id: $(arg base_topic)_right_optical_frame
         iso_speed: 800
         # param modes
         auto_brightness: $(arg dc_manual)
@@ -90,33 +88,17 @@
       </rosparam>
     </node>
 
-    <!--
-    <node pkg="nodelet" type="nodelet" name="image_proc_debayer_left"
-          args="load image_proc/debayer $(arg manager)">
-      <remap from="image_raw" to="$(arg base_topic)/left/image_raw" />
-      <remap from="image_mono" to="$(arg base_topic)/left/image_mono" />
-      <remap from="image_color" to="$(arg base_topic)/left/image_color" />
-    </node>
-
-    <node pkg="nodelet" type="nodelet" name="image_proc_debayer_right"
-          args="load image_proc/debayer $(arg manager)">
-      <remap from="image_raw" to="$(arg base_topic)/right/image_raw" />
-      <remap from="image_mono" to="$(arg base_topic)/right/image_mono" />
-      <remap from="image_color" to="$(arg base_topic)/right/image_color" />
-    </node>
-
     <node pkg="nodelet" type="nodelet" name="image_proc_rect_color_left"
           args="load image_proc/rectify $(arg manager)">
-      <remap from="image_mono" to="$(arg base_topic)/left/image_color" />
-      <remap from="image_rect" to="$(arg base_topic)/left/image_rect_color" />
+      <remap from="image_mono" to="$(arg base_topic)_left/image_raw" />
+      <remap from="image_rect" to="$(arg base_topic)_left/image_rect_color" />
     </node>
 
       <node pkg="nodelet" type="nodelet" name="image_proc_rect_color_right"
           args="load image_proc/rectify $(arg manager)">
-      <remap from="image_mono" to="$(arg base_topic)/right/image_color" />
-      <remap from="image_rect" to="$(arg base_topic)/right/image_rect_color" />
+      <remap from="image_mono" to="$(arg base_topic)_right/image_raw" />
+      <remap from="image_rect" to="$(arg base_topic)_right/image_rect_color" />
     </node>
-    -->
   </group>
 
 </launch>
