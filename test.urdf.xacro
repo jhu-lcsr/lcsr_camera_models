@@ -8,7 +8,10 @@
   <xacro:bumblebee2_66
     parent_link="world"
     xyz="0 0 1.0"
-    rpy="1.5707 0 0"
+    rpy="1.5707 3.1416 0"
+    optical_parent_link="world"
+    optical_xyz="0.06 0 1.0"
+    optical_rpy="1.5707 3.1416 0"
     ns="bumblebee"
     frame_prefix="bumblebee_"
     high_res="false"/>

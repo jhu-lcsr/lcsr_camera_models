@@ -9,7 +9,8 @@
   <xacro:property name="b2ly" value="0.036"/>
   <xacro:property name="b2lz" value="0.0474"/>
 
-  <xacro:macro name="bumblebee2" params="parent_link xyz rpy ns frame_prefix high_res hfov">
+  <xacro:macro name="bumblebee2" 
+    params="parent_link xyz rpy optical_parent_link optical_xyz optical_rpy ns frame_prefix high_res hfov">
     <joint name="bumblebee2_mount_joint" type="fixed">
       <parent link="${parent_link}"/>
       <child link="${frame_prefix}mount_link"/>
@@ -31,32 +32,32 @@
       </collision>
       <inertial>
         <mass value="${b2mass}" />
-        <inertia 
-          ixx="${1/12*b2mass*(b2ly*b2ly + b2lz*b2lz)}" ixy="0" ixz="0" 
-          iyy="${1/12*b2mass*(b2lx*b2lx + b2lz*b2lz)}" iyz="0" 
+        <inertia
+          ixx="${1/12*b2mass*(b2ly*b2ly + b2lz*b2lz)}" ixy="0" ixz="0"
+          iyy="${1/12*b2mass*(b2lx*b2lx + b2lz*b2lz)}" iyz="0"
           izz="${1/12*b2mass*(b2lx*b2lx + b2ly*b2ly)}" />
       </inertial>
     </link>
 
     <joint name="${frame_prefix}optical_joint" type="fixed">
-      <parent link="${frame_prefix}mount_link"/>
+      <parent link="${optical_parent_link}"/>
       <child link="${frame_prefix}optical_frame"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="${optical_xyz}" rpy="${optical_rpy}"/>
     </joint>
 
     <link name="${frame_prefix}optical_frame">
       <inertial>
-        <mass value="1E-6" />
-        <inertia 
-          ixx="1E-6" ixy="0" ixz="0" 
-          iyy="1E-6" iyz="0" 
-          izz="1E-6" />
+        <mass value="1E-5" />
+        <inertia
+          ixx="1E-10" ixy="0" ixz="0"
+          iyy="1E-10" iyz="0"
+          izz="1E-10" />
       </inertial>
     </link>
 
     <xacro:if value="${high_res}">
-      <xacro:stereo_camera 
-        reference="${frame_prefix}optical_frame" 
+      <xacro:stereo_camera
+        reference="${frame_prefix}optical_frame"
         frame_id="${frame_prefix}optical_frame"
         ns="${ns}"
         hfov="${hfov}"
@@ -65,12 +66,14 @@
         update_rate="24"
         width="1024"
         height="768"
-        format="R8G8B8"/>
+        format="R8G8B8"
+        near="0.05"
+        far="300"/>
     </xacro:if>
 
     <xacro:unless value="${high_res}">
-      <xacro:stereo_camera 
-        reference="${frame_prefix}optical_frame" 
+      <xacro:stereo_camera
+        reference="${frame_prefix}optical_frame"
         frame_id="${frame_prefix}optical_frame"
         ns="${ns}"
         hfov="${hfov}"
@@ -86,11 +89,14 @@
   </xacro:macro>
 
   <!-- A bumblebee with a 97-degre HFOV lens -->
-  <xacro:macro name="bumblebee2_97" params="parent_link xyz rpy ns frame_prefix high_res">
+  <xacro:macro name="bumblebee2_97" params="parent_link xyz rpy optical_parent_link optical_xyz optical_rpy ns frame_prefix high_res">
     <xacro:bumblebee2
-      parent_link="${parent_link}" 
+      parent_link="${parent_link}"
       xyz="${xyz}"
       rpy="${rpy}"
+      optical_parent_link="${optical_parent_link}"
+      optical_xyz="${optical_xyz}"
+      optical_rpy="${optical_rpy}"
       ns="${ns}"
       frame_prefix="${frame_prefix}"
       high_res="${high_res}"
@@ -98,11 +104,14 @@
   </xacro:macro>
 
   <!-- A bumblebee with a 66-degre HFOV lens -->
-  <xacro:macro name="bumblebee2_66" params="parent_link xyz rpy ns frame_prefix high_res">
+  <xacro:macro name="bumblebee2_66" params="parent_link xyz rpy optical_parent_link optical_xyz optical_rpy ns frame_prefix high_res">
     <xacro:bumblebee2
-      parent_link="${parent_link}" 
+      parent_link="${parent_link}"
       xyz="${xyz}"
       rpy="${rpy}"
+      optical_parent_link="${optical_parent_link}"
+      optical_xyz="${optical_xyz}"
+      optical_rpy="${optical_rpy}"
       ns="${ns}"
       frame_prefix="${frame_prefix}"
       high_res="${high_res}"
@@ -110,11 +119,14 @@
   </xacro:macro>
 
   <!-- A bumblebee with a 43-degre HFOV lens -->
-  <xacro:macro name="bumblebee2_43" params="parent_link xyz rpy ns frame_prefix high_res">
+  <xacro:macro name="bumblebee2_43" params="parent_link xyz rpy optical_parent_link optical_xyz optical_rpy ns frame_prefix high_res">
     <xacro:bumblebee2
-      parent_link="${parent_link}" 
+      parent_link="${parent_link}"
       xyz="${xyz}"
       rpy="${rpy}"
+      optical_parent_link="${optical_parent_link}"
+      optical_xyz="${optical_xyz}"
+      optical_rpy="${optical_rpy}"
       ns="${ns}"
       frame_prefix="${frame_prefix}"
       high_res="${high_res}"
@@ -122,4 +134,4 @@
   </xacro:macro>
 </robot>
 
-      
+

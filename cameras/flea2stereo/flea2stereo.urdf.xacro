@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find lcsr_camera_models)/stereo_camera.urdf.xacro"/>
+
+  <xacro:macro name="flea2stereo"
+    params="parent_link xyz rpy optical_parent_link optical_xyz optical_rpy ns prefix hfov">
+
+    <joint name="${prefix}_mount_joint" type="fixed">
+      <parent link="${optical_parent_link}"/>
+      <child link="${prefix}optical_frame"/>
+      <origin xyz="${optical_xyz}" rpy="${optical_rpy}"/>
+    </joint>
+
+    <link name="${prefix}optical_frame">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.1 0.1 0.03"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.1 0.1 0.03"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.300" />
+        <inertia
+          ixx="0.001" ixy="0" ixz="0"
+          iyy="0.001" iyz="0"
+          izz="0.01" />
+      </inertial>
+    </link>
+
+    <xacro:stereo_camera
+      reference="${prefix}optical_frame"
+      frame_id="${prefix}optical_frame"
+      ns="${ns}"
+      hfov="${hfov}"
+
+      baseline="0.042730"
+      update_rate="15"
+      width="1280"
+      height="960"
+      format="R8G8B8"
+      near="0.05"
+      far="300"/>
+  </xacro:macro>
+
+</robot>
+
+
