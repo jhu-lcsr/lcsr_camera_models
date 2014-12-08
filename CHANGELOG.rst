@@ -2,8 +2,8 @@
 Changelog for package lcsr_camera_models
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.2.0 (2014-12-08)
+------------------
 * adding ir calibration for kinect
 * IR calibration
 * Adding call for this kinect
