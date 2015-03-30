@@ -4,6 +4,7 @@
   <arg name="camera" default="stereo_camera"/>
   <arg name="base_topic" default="$(arg camera)" />
   <arg name="manager" default="stereo_camera_nodelet_manager" />
+  <arg name="proc" default="true"/>
 
   <!-- nodelet manager process -->
   <group>
@@ -88,14 +89,22 @@
       </rosparam>
     </node>
 
-    <node pkg="nodelet" type="nodelet" name="image_proc_rect_color_left"
+    <!-- stereo processing -->
+    <include if="$(arg proc)" file="$(find)/launch/stereo_image_proc.launch">
+      <arg name="manager" value="$(arg manager)"/>
+      <arg name="left" value="$(arg base_topic)_left"/>
+      <arg name="right" value="$(arg base_topic)_right"/>
+    </include>
+
+    <!-- just rectification processing -->
+    <node unless="$(arg proc)" pkg="nodelet" type="nodelet" name="image_proc_rect_color_left"
           args="load image_proc/rectify $(arg manager)">
       <remap from="image_mono" to="$(arg base_topic)_left/image_raw" />
       <remap from="image_rect" to="$(arg base_topic)_left/image_rect_color" />
     </node>
 
-      <node pkg="nodelet" type="nodelet" name="image_proc_rect_color_right"
-          args="load image_proc/rectify $(arg manager)">
+    <node unless="$(arg proc)" pkg="nodelet" type="nodelet" name="image_proc_rect_color_right"
+      args="load image_proc/rectify $(arg manager)">
       <remap from="image_mono" to="$(arg base_topic)_right/image_raw" />
       <remap from="image_rect" to="$(arg base_topic)_right/image_rect_color" />
     </node>
