@@ -1,0 +1,57 @@
+<!-- Launch in the camera namespace containing "image_raw" and "camera_info" -->
+<launch>
+
+  <arg name="manager" /> <!-- Must be globally qualified -->
+  <arg name="respawn" default="false" />
+  <arg name="left" default="left" />
+  <arg name="right" default="right" />
+  <arg name="approximate_sync" default="false"/>
+  <!-- TODO Arguments for sync policy, etc? -->
+
+  <arg     if="$(arg respawn)" name="bond" value="" />
+  <arg unless="$(arg respawn)" name="bond" value="--no-bond" />
+
+  <!-- Basic processing for left camera -->
+  <include file="$(find lcsr_camera_models)/image_proc.launch"
+	   ns="$(arg left)">
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="respawn" value="$(arg respawn)" />
+  </include>
+
+  <!-- Basic processing for right camera -->
+  <include file="$(find lcsr_camera_models)/image_proc.launch"
+	   ns="$(arg right)">
+    <arg name="manager" value="$(arg manager)" />
+    <arg name="respawn" value="$(arg respawn)" />
+  </include>
+
+  <!-- Disparity image -->
+  <node pkg="nodelet" type="nodelet" name="disparity"
+    args="load stereo_image_proc/disparity $(arg manager) $(arg bond)"
+    output="screen"
+    respawn="$(arg respawn)">
+    <param name="approximate_sync" value="$(arg approximate_sync)"/>
+    <param name="queue_size" value="5"/>
+    <rosparam>
+      prefilter_size: 9
+      prefilter_cap: 31
+      correlation_window_size: 21
+      min_disparity: 17
+      disparity_range: 64
+      uniqueness_ration: 15.0
+      texture_threshold: 10
+      speckle_size: 1000
+      speckle_range: 5
+    </rosparam>
+  </node>
+
+  <!-- Point cloud, PCL-friendly -->
+  <node pkg="nodelet" type="nodelet" name="point_cloud2"
+    args="load stereo_image_proc/point_cloud2 $(arg manager) $(arg bond)"
+    output="screen"
+    respawn="$(arg respawn)">
+    <param name="approximate_sync" value="$(arg approximate_sync)"/>
+    <param name="queue_size" value="5"/>
+  </node>
+</launch>
+
