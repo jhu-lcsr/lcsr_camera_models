@@ -45,8 +45,8 @@
       width="1280"
       height="960"
       format="R8G8B8"
-      near="0.05"
-      far="300"/>
+      near="0.005"
+      far="10"/>
   </xacro:macro>
 
 </robot>
