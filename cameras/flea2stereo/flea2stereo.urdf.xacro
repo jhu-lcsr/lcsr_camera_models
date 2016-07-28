@@ -40,10 +40,10 @@
       ns="${ns}"
       hfov="${hfov}"
 
-      baseline="0.082730"
+      baseline="0.064"
       update_rate="15"
       width="1280"
-      height="960"
+      height="720"
       format="R8G8B8"
       near="0.005"
       far="10"/>
